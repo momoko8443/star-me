@@ -1,0 +1,22 @@
+{
+  "name": "star-me-ui",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Jake Zheng <momoko8443@163.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/momoko8443/star-me",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ukulelejs": "^1.2.9",
+    "bootstrap": "^3.3.7",
+    "routejs": "uku-routejs#*"
+  }
+}

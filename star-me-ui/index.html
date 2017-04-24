@@ -40,7 +40,11 @@
 
     uku.addListener(Ukulele.INITIALIZED,function(){
       $.get('/api/authenticatedUser',function(result){
-        console.log(result);  
+        if(result){
+          console.log('login success');
+        }else{
+          console.log('not login');
+        }  
       });
     });
 

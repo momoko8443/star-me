@@ -13,14 +13,21 @@
                     <a class="navbar-brand" href="#">弄好，游客桑</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <form class="navbar-form navbar-right">
-                        <button type="submit" class="btn btn-success">登录</button>
-                    </form>
+                    <div class="navbar-form navbar-right">
+                        <button class="btn btn-success" uku-onclick="cc.signIn()">登录</button>
+                    </div>
                 </div>
             </div>
         </nav>
     </template>
     <script>
-
+        (function(){
+            return function(uku){
+                this.authorized = false;
+                this.signIn = function(){
+                    window.location.href = '/authorization';
+                };
+            };
+        })();
     </script>
 </uku-component>

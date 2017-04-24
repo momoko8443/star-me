@@ -37,7 +37,16 @@
     uku.registerComponent('repo-item','components/repo-item.html');
     uku.registerComponent('my-footer','components/footer.html');
     uku.registerComponent('comment-modal','components/comment-modal.html');
+
+    uku.addListener(Ukulele.INITIALIZED,function(){
+      $.get('/api/authenticatedUser',function(result){
+        console.log(result);  
+      });
+    });
+
     uku.init();
+
+    
   </script>
 </body>
 

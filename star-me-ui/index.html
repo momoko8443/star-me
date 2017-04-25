@@ -18,10 +18,10 @@
 
 <body uku-application>
 
-  <navigator-bar></navigator-bar>
+  <navigator-bar uku-login-user="appCtrl.loginUser"></navigator-bar>
   <jumbotron id="jumbotron"></jumbotron>
   <filter-bar></filter-bar>
-  <content-list uku-search-result="appCtrl.searchResult"></content-list>
+  <content-list uku-search-results="appCtrl.searchResults"></content-list>
   <my-footer></my-footer>
 
   <comment-modal></comment-modal>
@@ -44,7 +44,9 @@
     uku.addListener(Ukulele.INITIALIZED,function(){
       $.get('/api/authenticatedUser',function(result){
         if(result){
+          appCtrl.loginUser = result;
           console.log('login success');
+          uku.refresh('appCtrl');
         }else{
           console.log('not login');
         }  
@@ -55,17 +57,16 @@
     uku.init();
 
     function ApplicationController(uku){
-      
+      var self = this;
+      this.loginUser = null;
       this.registerListener = function(){
         document.getElementById('jumbotron').addEventListener('dosearch',function(event){
           var keyword = event.data.keyword;
           if(keyword){
-            $.get('api/search/'+keyword,function(result){
-              console.log(result);
-              if(result.total_count && result.total_count > 0){
-                self.searchResult = result;
-                uku.refresh('appCtrl');
-              }
+            $.get('api/search/' + encodeURIComponent(keyword),function(result){
+              //console.log(result);
+              self.searchResults = result.items;
+              uku.refresh('appCtrl');
             });
           }else{
 

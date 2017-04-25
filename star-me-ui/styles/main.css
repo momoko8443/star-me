@@ -3,7 +3,11 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
 }
-
+.login-user-avatar{
+  width: 30px;
+  height: 30px;
+  margin-top: 2px;
+}
 .search-wraper {
     margin-left: auto;
     margin-right: auto;
@@ -42,6 +46,7 @@ body {
 }
 .repo-item{
   position: relative;
+  height: 160px;
   padding: 10px;
 }
 .repo-item:hover {
@@ -60,4 +65,11 @@ body {
   top: 25px;
   right: 20px;
   cursor: pointer;
+}
+.repo-item-description{
+ 	overflow: hidden;
+ 	text-overflow: ellipsis;
+ 	display: -webkit-box;
+ 	-webkit-line-clamp: 1;
+ 	-webkit-box-orient: vertical;
 }

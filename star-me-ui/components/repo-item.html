@@ -1,21 +1,18 @@
 <uku-component>
     <template>
         <div class="col-md-4 repo-item">
-            <h2>Heading</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
-                nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed
-                odio dui.
-            </p>
+            <h2>{{cc.repo.name}}</h2>
+            <p class="repo-item-description">{{cc.labelFunction(cc.repo.description)}}</p>
             <span>
-                <img src="https://avatars0.githubusercontent.com/u/4987944?v=3" width="50" height="50" class="repo-author-avatar">
+                <img uku-src="cc.repo.owner.avatar_url" width="50" height="50" class="repo-author-avatar">
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="repo-extra">
                 <i class="fa fa-star"></i>
-                300
+                <span>{{cc.repo.stargazers_count}}</span>
                 </span> &nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="repo-extra">
                 <i class="fa fa-code-fork"></i>
-                100
+                <span>{{cc.repo.forks_count}}</span>
                 </span> &nbsp;&nbsp;&nbsp;&nbsp;
                 <span class="repo-extra">
                 <i class="fa fa-comments"></i>
@@ -33,7 +30,23 @@
             return function(uku){
                 this.star = function(){
                     jq('#myModal').modal('toggle');
-                };  
+                };
+
+                this.labelFunction = function(value){
+                    if(!value){
+                        return '这家伙很懒，什么也没留下';
+                    }else{
+                        return value;
+                    }
+                };
+
+                Object.defineProperty(this,'repoItem',{
+                    set: function(value){
+                        if(value){
+                            this.repo = value;
+                        }
+                    }
+                })  
             }
         })($)
     </script>

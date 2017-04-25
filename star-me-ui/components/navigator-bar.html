@@ -10,11 +10,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">弄好，游客桑</a>
+                    <a class="navbar-brand" href="#">{{cc.welcomeMessage}}</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <div class="navbar-form navbar-right">
-                        <button class="btn btn-success" uku-onclick="cc.signIn()">登录</button>
+                        <img uku-src="cc.user.avatar_url" class="login-user-avatar" uku-render="cc.authorized">
+                        <button class="btn btn-success" uku-onclick="cc.signIn()" uku-render="cc.notAuthorized">登录</button>
                     </div>
                 </div>
             </div>
@@ -24,9 +25,21 @@
         (function(){
             return function(uku){
                 this.authorized = false;
+                this.notAuthorized = true;
                 this.signIn = function(){
                     window.location.href = '/authorization';
                 };
+                this.welcomeMessage = '侬好，游客桑';
+                Object.defineProperty(this, 'loginUser', {
+                    set: function(value){
+                        if(value){
+                            this.user = value;
+                            this.authorized = true;
+                            this.notAuthorized = false;
+                            this.welcomeMessage = '侬好，' + this.user.name + '桑';
+                        }
+                    }
+                });
             };
         })();
     </script>

@@ -3,11 +3,11 @@
         <div class="container" style="padding-top:30px">
             <!-- Example row of columns -->
             <div class="row">
-                <repo-item uku-repeat="repo in cc.repos"></repo-item>
+                <repo-item uku-repeat="repo in cc.repos" uku-repo-item="repo"></repo-item>
             </div>
-            <div class="row" style="padding-top:20px">
+            <div class="row" style="padding-top:20px" uku-render="cc.showMoreBtn">
                 <div class="col-md-12">
-                    <button class="btn btn-default btn-block" style="color:#aaa">更多 »</button>
+                    <button class="btn btn-default btn-block" style="color:#aaa" uku-onclick="cc.more()">更多 »</button>
                 </div>
             </div>
         </div>
@@ -15,14 +15,39 @@
     <script>
         (function(){
             return function(){
+                var self = this;
+                var all_repos = [];
+                var page_size = 20;
+                var page_no = 1;
                 this.repos = [];
-                Object.defineProperty(this, 'searchResult',{
+                this.showMoreBtn = false;
+                this.more = function(){
+                    page_no++;
+                    var next_page_repos = all_repos.slice((page_no-1)*page_size,page_no*page_size);
+                    this.repos = this.repos.concat(next_page_repos);
+                    
+                    this.showMoreBtn = loadCompeleted();
+                };
+                function loadCompeleted(){
+                    if(self.repos.length === all_repos.length){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                }
+                Object.defineProperty(this, 'searchResults',{
                     set: function(value){
                         if(value){
-                            this.repos = value.items;
+                            all_repos = value;
+                            page_no = 1;
+                            this.repos = all_repos.slice(0,page_size);
+                            this.showMoreBtn = loadCompeleted();
                         }
+                        console.log(value);
                     }
                 });
+
+                
             };
         })();
     </script>

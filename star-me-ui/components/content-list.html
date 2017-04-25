@@ -3,12 +3,7 @@
         <div class="container" style="padding-top:30px">
             <!-- Example row of columns -->
             <div class="row">
-                <repo-item></repo-item>
-                <repo-item></repo-item>
-                <repo-item></repo-item>
-                <repo-item></repo-item>
-                <repo-item></repo-item>
-                <repo-item></repo-item>
+                <repo-item uku-repeat="repo in cc.repos"></repo-item>
             </div>
             <div class="row" style="padding-top:20px">
                 <div class="col-md-12">
@@ -18,6 +13,17 @@
         </div>
     </template>
     <script>
-
+        (function(){
+            return function(){
+                this.repos = [];
+                Object.defineProperty(this, 'searchResult',{
+                    set: function(value){
+                        if(value){
+                            this.repos = value.items;
+                        }
+                    }
+                });
+            };
+        })();
     </script>
 </uku-component>

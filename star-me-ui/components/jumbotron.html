@@ -9,7 +9,7 @@
                 </p>
                 <form class="search-wraper" role="search">
                     <div class="form-group">
-                        <input class="form-control search clearable" placeholder="搜索开源库，例如：你的作品" autocomplete="off">
+                        <input class="form-control search clearable" type="text" uku-value="cc.keyword" uku-onkeyup="cc.search()" placeholder="搜索开源库，例如：你的作品" autocomplete="off">
                         <i class="fa fa-search search-icon"></i>
                     </div>
                 </form>
@@ -17,6 +17,19 @@
         </div>
     </template>
     <script>
-
+        (function(){
+            return function(uku){
+                this.keyword = '';
+                var timer;
+                var self = this;
+                this.search = function(){
+                    clearTimeout(timer);
+                    timer = setTimeout(function(){
+                        self.fire('dosearch',{'keyword':self.keyword});
+                        uku.refresh();
+                    },500);               
+                };
+            };
+        })();
     </script>
 </uku-component>

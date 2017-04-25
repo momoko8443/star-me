@@ -19,15 +19,16 @@
 <body uku-application>
 
   <navigator-bar></navigator-bar>
-  <jumbotron></jumbotron>
+  <jumbotron id="jumbotron"></jumbotron>
   <filter-bar></filter-bar>
-  <content-list></content-list>
+  <content-list uku-search-result="appCtrl.searchResult"></content-list>
   <my-footer></my-footer>
 
   <comment-modal></comment-modal>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="bower_components/ukulelejs/dist/uku.js"></script>
+  <script src="bower_components/ukulelejs/dist/polyfill/custom_event.js"></script>
   <script>
     var uku = new Ukulele();
     uku.registerComponent('navigator-bar','components/navigator-bar.html');
@@ -37,6 +38,8 @@
     uku.registerComponent('repo-item','components/repo-item.html');
     uku.registerComponent('my-footer','components/footer.html');
     uku.registerComponent('comment-modal','components/comment-modal.html');
+    var appCtrl = new ApplicationController(uku);
+    uku.registerController('appCtrl',appCtrl);
 
     uku.addListener(Ukulele.INITIALIZED,function(){
       $.get('/api/authenticatedUser',function(result){
@@ -46,9 +49,33 @@
           console.log('not login');
         }  
       });
+      appCtrl.registerListener();
     });
 
     uku.init();
+
+    function ApplicationController(uku){
+      
+      this.registerListener = function(){
+        document.getElementById('jumbotron').addEventListener('dosearch',function(event){
+          var keyword = event.data.keyword;
+          if(keyword){
+            $.get('api/search/'+keyword,function(result){
+              console.log(result);
+              if(result.total_count && result.total_count > 0){
+                self.searchResult = result;
+                uku.refresh('appCtrl');
+              }
+            });
+          }else{
+
+          }
+        });
+      };
+      // this.searchHandler = function(event,data){
+        
+      // };
+    }
 
     
   </script>

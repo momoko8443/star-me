@@ -16,7 +16,8 @@
     },
     "api":{
         "user":"https://api.github.com/user",
-        "repos":"https://api.github.com/users/{0}/repos"
+        "repos":"https://api.github.com/users/{0}/repos",
+        "search":"https://api.github.com/search/repositories"
     }
 
 }

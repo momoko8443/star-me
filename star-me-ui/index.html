@@ -21,7 +21,7 @@
   <navigator-bar uku-login-user="appCtrl.loginUser"></navigator-bar>
   <jumbotron id="jumbotron"></jumbotron>
   <filter-bar></filter-bar>
-  <content-list uku-search-results="appCtrl.searchResults"></content-list>
+  <content-list id="content-list" uku-search-results="appCtrl.searchResults"></content-list>
   <my-footer></my-footer>
 
   <comment-modal></comment-modal>
@@ -60,6 +60,12 @@
       var self = this;
       this.loginUser = null;
       this.registerListener = function(){
+        document.getElementById('content-list').addEventListener('opencommentmodal',function(event){
+          var repo = event.data.repo;
+          console.log(repo);
+          $('#myModal').modal('toggle');
+        });
+        
         document.getElementById('jumbotron').addEventListener('dosearch',function(event){
           var keyword = event.data.keyword;
           if(keyword){

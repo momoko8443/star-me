@@ -26,10 +26,11 @@
         </div>
     </template>
     <script>
-        (function(jq){
+        (function(){
             return function(uku){
                 this.star = function(){
-                    jq('#myModal').modal('toggle');
+                    //jq('#myModal').modal('toggle');
+                    this.fire('opencommentmodal',{repo:this.repo},true);
                 };
 
                 this.labelFunction = function(value){
@@ -48,6 +49,6 @@
                     }
                 })  
             }
-        })($)
+        })();
     </script>
 </uku-component>

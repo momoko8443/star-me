@@ -8,7 +8,7 @@ function RepoGithub(config){
         return new Promise(function(resolve, reject){
             var fields = ['name'];
             var limits = ['stars:<100'];
-            var url = api.search + '?q=' + keyword + '+in:'+ fields.join(',') + '+' + limits.join('+') + '&type=Repositories&per_page=100';
+            var url = api.search + '?q=' + keyword + '+in:'+ fields.join(',') + '+' + limits.join('+') + '&type=Repositories&per_page=50';
             console.log(url);
             var headers = {'User-Agent': app.app_name};
             if(token){

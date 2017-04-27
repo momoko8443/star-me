@@ -6,7 +6,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">夸她几句</h4>
+                        <h4 class="modal-title" id="myModalLabel">{{cc.labelFunction()}}</h4>
                     </div>
                     <div class="modal-body">
                         <form>
@@ -25,6 +25,24 @@
         </div>
     </template>
     <script>
-
+        (function(){
+            return function(uku){
+                this.labelFunction = function(){
+                    if(this.selectedRepo){
+                        return '夸'+ this.selectedRepo.name + '几句';
+                    }else{
+                        return '夸她几句';
+                    }
+                    
+                };
+                Object.defineProperty(this, 'repo', {
+                    set: function(value){
+                        if(value){
+                            this.selectedRepo = value;
+                        }
+                    }
+                })
+            };
+        })();
     </script>
 </uku-component>

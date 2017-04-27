@@ -24,67 +24,63 @@
   <content-list id="content-list" uku-search-results="appCtrl.searchResults"></content-list>
   <my-footer></my-footer>
 
-  <comment-modal></comment-modal>
+  <comment-modal uku-repo="appCtrl.selectedRepo"></comment-modal>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="bower_components/ukulelejs/dist/uku.js"></script>
   <script src="bower_components/ukulelejs/dist/polyfill/custom_event.js"></script>
   <script>
     var uku = new Ukulele();
-    uku.registerComponent('navigator-bar','components/navigator-bar.html');
-    uku.registerComponent('jumbotron','components/jumbotron.html');
-    uku.registerComponent('filter-bar','components/filter-bar.html');
-    uku.registerComponent('content-list','components/content-list.html');
-    uku.registerComponent('repo-item','components/repo-item.html');
-    uku.registerComponent('my-footer','components/footer.html');
-    uku.registerComponent('comment-modal','components/comment-modal.html');
+    uku.registerComponent('navigator-bar', 'components/navigator-bar.html');
+    uku.registerComponent('jumbotron', 'components/jumbotron.html');
+    uku.registerComponent('filter-bar', 'components/filter-bar.html');
+    uku.registerComponent('content-list', 'components/content-list.html');
+    uku.registerComponent('repo-item', 'components/repo-item.html');
+    uku.registerComponent('my-footer', 'components/footer.html');
+    uku.registerComponent('comment-modal', 'components/comment-modal.html');
     var appCtrl = new ApplicationController(uku);
-    uku.registerController('appCtrl',appCtrl);
+    uku.registerController('appCtrl', appCtrl);
 
-    uku.addListener(Ukulele.INITIALIZED,function(){
-      $.get('/api/authenticatedUser',function(result){
-        if(result){
+    uku.addListener(Ukulele.INITIALIZED, function () {
+      $.get('/api/authenticatedUser', function (result) {
+        if (result) {
           appCtrl.loginUser = result;
           console.log('login success');
           uku.refresh('appCtrl');
-        }else{
+        } else {
           console.log('not login');
-        }  
+        }
       });
       appCtrl.registerListener();
     });
 
     uku.init();
 
-    function ApplicationController(uku){
+    function ApplicationController(uku) {
       var self = this;
       this.loginUser = null;
-      this.registerListener = function(){
-        document.getElementById('content-list').addEventListener('opencommentmodal',function(event){
+      this.registerListener = function () {
+        document.getElementById('content-list').addEventListener('opencommentmodal', function (event) {
           var repo = event.data.repo;
-          console.log(repo);
+          self.selectedRepo = repo;
+          uku.refresh('appCtrl');
           $('#myModal').modal('toggle');
+
         });
-        
-        document.getElementById('jumbotron').addEventListener('dosearch',function(event){
+
+        document.getElementById('jumbotron').addEventListener('dosearch', function (event) {
           var keyword = event.data.keyword;
-          if(keyword){
-            $.get('api/search/' + encodeURIComponent(keyword),function(result){
-              //console.log(result);
+          if (keyword) {
+            $.get('api/search/' + encodeURIComponent(keyword), function (result) {
               self.searchResults = result.items;
               uku.refresh('appCtrl');
             });
-          }else{
+          } else {
 
           }
         });
       };
-      // this.searchHandler = function(event,data){
-        
-      // };
     }
-
-    
   </script>
 </body>
 

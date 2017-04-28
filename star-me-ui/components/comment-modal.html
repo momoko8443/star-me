@@ -10,15 +10,17 @@
                     </div>
                     <div class="modal-body">
                         <form>
-                        <div class="form-group">
-                            <label for="message-text" class="control-label">赞美之词:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
-                        </div>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">赞美之词:</label>
+                                <textarea class="form-control" id="message-text" uku-value="cc.comment" uku-oninput="cc.checkValidity()" rows=5 minlength="20"></textarea>
+                                <br/>
+                                <div class="alert alert-success" role="alert" uku-render="cc.showMessage">您的赞美必须多于10字哟</div>
+                            </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary">确定</button>
+                        <button type="button" class="btn btn-primary" uku-disabled="cc.showMessage" uku-onclick="cc.submit()">确定</button>
                     </div>
                 </div>
             </div>
@@ -27,14 +29,28 @@
     <script>
         (function(){
             return function(uku){
+                this.comment = '';
+                this.showMessage = true;
                 this.labelFunction = function(){
                     if(this.selectedRepo){
                         return '夸'+ this.selectedRepo.name + '几句';
                     }else{
                         return '夸她几句';
-                    }
-                    
+                    } 
                 };
+
+                this.checkValidity = function(event){
+                    var valid = this.comment.length > 20 ? true:false;//event.target.checkValidity();
+                    if(valid){
+                        this.showMessage = false;
+                    }else{
+                        this.showMessage = true;
+                    }
+                };
+
+                this.submit = function(){
+                    //if()
+                }
                 Object.defineProperty(this, 'repo', {
                     set: function(value){
                         if(value){

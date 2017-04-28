@@ -17,7 +17,7 @@ function IssueGithub(config) {
                     body: {
                         title: title,
                         body: body,
-                        label: ['wontfix']
+                        labels: ['wontfix']
                     }
                 }, function (error, response, body) {
                     if (error) {

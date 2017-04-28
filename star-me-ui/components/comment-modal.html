@@ -1,7 +1,7 @@
 <uku-component>
     <template>
         <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -12,14 +12,14 @@
                         <form>
                             <div class="form-group">
                                 <label for="message-text" class="control-label">赞美之词:</label>
-                                <textarea class="form-control" id="message-text" uku-value="cc.comment" uku-oninput="cc.checkValidity()" rows=5 minlength="20"></textarea>
+                                <textarea class="form-control" id="message-text" uku-value="cc.commentBody" uku-oninput="cc.checkValidity()" rows=5 minlength="20"></textarea>
                                 <br/>
                                 <div class="alert alert-success" role="alert" uku-render="cc.showMessage">您的赞美必须多于10字哟</div>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" uku-onclick="cc.cancel()">取消</button>
                         <button type="button" class="btn btn-primary" uku-disabled="cc.showMessage" uku-onclick="cc.submit()">确定</button>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
     <script>
         (function(){
             return function(uku){
-                this.comment = '';
+                this.commentBody = '';
                 this.showMessage = true;
                 this.labelFunction = function(){
                     if(this.selectedRepo){
@@ -40,7 +40,7 @@
                 };
 
                 this.checkValidity = function(event){
-                    var valid = this.comment.length > 20 ? true:false;//event.target.checkValidity();
+                    var valid = this.commentBody.length > 20 ? true:false;//event.target.checkValidity();
                     if(valid){
                         this.showMessage = false;
                     }else{
@@ -49,12 +49,24 @@
                 };
 
                 this.submit = function(){
-                    //if()
+                    this.fire('submitcomment',{repo:this.selectedRepo,comment:this.commentBody});
+                };
+
+                this.cancel = function(){
+                    this.commentBody = '';
                 }
+
                 Object.defineProperty(this, 'repo', {
                     set: function(value){
                         if(value){
                             this.selectedRepo = value;
+                        }
+                    }
+                });
+                Object.defineProperty(this, 'clear', {
+                    set: function(value){
+                        if(value === true){
+                            this.commentBody = '';
                         }
                     }
                 })

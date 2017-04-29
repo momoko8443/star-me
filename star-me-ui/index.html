@@ -76,17 +76,25 @@
 
         });
         this.comment = '';
-        document.getElementById('comment-modal').addEventListener('submitcomment', function(event){
-          var repoName = event.data.repo.full_name;
+        document.getElementById('comment-modal').addEventListener('submitcomment', function (event) {
+          var repo = event.data.repo;
+          var repoName = repo.full_name;
           self.comment = event.data.comment;
-          var url = 'api/repos/'+ encodeURIComponent(repoName) +'/comments';
-          $.post(url,{body:comment},function(result){
-            if(result === 'Created'){
-              $('#comment-modal').modal('toggle');
+          var url = 'api/repos/' + repo.id + '/comments';
+          $.ajax({
+            type: "POST",
+            url: url,
+            processData: false,
+            contentType: 'application/json',
+            data: JSON.stringify({body:self.comment,repo:repo}),
+            success: function (result) {
+              if(result === 'Created'){
+                $('#comment-modal').modal('toggle');
+              }
             }
           });
         });
-        
+
         document.getElementById('jumbotron').addEventListener('dosearch', function (event) {
           var keyword = event.data.keyword;
           if (keyword) {

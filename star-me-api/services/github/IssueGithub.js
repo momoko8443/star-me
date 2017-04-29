@@ -17,7 +17,7 @@ function IssueGithub(config) {
                     body: {
                         title: title,
                         body: body,
-                        labels: ['wontfix']
+                        labels: ['recommend']
                     }
                 }, function (error, response, body) {
                     if (error) {
@@ -62,7 +62,7 @@ function IssueGithub(config) {
 
     this.findOne = function (token, repoName) {
         return new Promise(function (resolve, reject) {
-            var url = api.search + '/issues?q=' + repoName + '+in:title+repo:momoko8443/star-me+type:issue&type=Issues';
+            var url = api.search + '/issues?q=' + repoName + '+in:title+label:recommend+state:open+repo:momoko8443/star-me+type:issue&type=Issues';
             console.log(url);
             var headers = { 'User-Agent': app.app_name };
             if (token) {
@@ -85,7 +85,7 @@ function IssueGithub(config) {
 
     this.findAll = function (token) {
         return new Promise(function (resolve, reject) {
-            var url = api.search + '/issues?q=recommend+in:title+repo:momoko8443/star-me+type:issue&type=Issues';
+            var url = api.issue + '?state=open&labels=recommend';
             var headers = { 'User-Agent': app.app_name };
             if (token) {
                 headers = { 'User-Agent': app.app_name, Authorization: 'token ' + token };

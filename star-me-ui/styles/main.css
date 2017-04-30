@@ -49,6 +49,11 @@ body {
   height: 160px;
   padding: 10px;
 }
+
+.recommend-item{
+  border-left: 12px solid yellowgreen;
+}
+
 .repo-item:hover {
   background: #E5E7E6;
 }

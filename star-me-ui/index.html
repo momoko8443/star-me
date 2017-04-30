@@ -54,7 +54,7 @@
 
       $.get('/api/repos', function (result) {
         if (result) {
-          self.searchResults = result.items;
+          appCtrl.searchResults = result;
           uku.refresh('appCtrl');
         }
       });
@@ -86,9 +86,9 @@
             url: url,
             processData: false,
             contentType: 'application/json',
-            data: JSON.stringify({body:self.comment,repo:repo}),
+            data: JSON.stringify({ body: self.comment, repo: repo }),
             success: function (result) {
-              if(result === 'Created'){
+              if (result === 'Created') {
                 $('#comment-modal').modal('toggle');
               }
             }
@@ -99,7 +99,7 @@
           var keyword = event.data.keyword;
           if (keyword) {
             $.get('api/search/' + encodeURIComponent(keyword), function (result) {
-              self.searchResults = result.items;
+              self.searchResults = result;
               uku.refresh('appCtrl');
             });
           } else {

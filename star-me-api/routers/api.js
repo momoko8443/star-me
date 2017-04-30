@@ -31,8 +31,13 @@ module.exports = function (server, config) {
         var keyword = req.params.keyword;
         if (keyword) {
             var token = cache.get(req.session.id);
-            repoGithub.search(token,keyword).then(function (repos) {
-                res.send(repos);
+            repoGithub.search(token,keyword).then(function (result) {
+                result.items.forEach(function(item){
+                    if(repos_cache[item.full_name]){
+                        item.extra = repos_cache[item.full_name].extra;
+                    }
+                });
+                res.send(result.items);
             }).catch(function (err) {
                 console.log(err);
             })
@@ -42,18 +47,20 @@ module.exports = function (server, config) {
     });
 
     var issueGithub = new IssueGithub(config);
-    var repos_cache = null;
+    var repos_cache = {};
     router.get('/repos', function(req, res){
         var token = cache.get(req.session.id);
-        if(repos_cache){
-            res.send(repos_cache);
-        }else{
-            issueGithub.findAll(token).then(function(result){
-                repos_cache = result;
-                res.send(result);
+        issueGithub.findAll(token).then(function(result){
+                //repos_cache = result;
+            var tmp = [];
+            result.forEach(function (element) {
+                var repo = JSON.parse(element.body);
+                repo.extra = {comments_count:element.comments};
+                tmp.push(repo);
+                repos_cache[repo.full_name] = repo;
             });
-        }
-        
+            res.send(tmp);
+        });
     });
 
     router.post('/repos/:id/comments', function(req, res){

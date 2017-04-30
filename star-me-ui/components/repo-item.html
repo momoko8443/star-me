@@ -1,6 +1,6 @@
 <uku-component>
     <template>
-        <div class="col-md-4 repo-item">
+        <div uku-class="cc.repoItemStyle()">
             <h2>{{cc.repo.name}}</h2>
             <p class="repo-item-description">{{cc.labelFunction(cc.repo.description)}}</p>
             <span>
@@ -14,9 +14,9 @@
                 <i class="fa fa-code-fork"></i>
                 <span>{{cc.repo.forks_count}}</span>
                 </span> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span class="repo-extra">
+                <span class="repo-extra" uku-render="cc.isRecommended()">
                 <i class="fa fa-comments"></i>
-                50
+                <span>{{cc.repo.extra.comments_count}}</span>
                 </span>
             </span>
             <span class="star-btn" uku-onclick="cc.star()">
@@ -31,6 +31,21 @@
                 this.star = function(){
                     //jq('#myModal').modal('toggle');
                     this.fire('opencommentmodal',{repo:this.repo},true);
+                };
+
+                this.repoItemStyle = function(){
+                    if(this.isRecommended()){
+                        return 'col-md-4 repo-item recommend-item';
+                    }else{
+                        return 'col-md-4 repo-item'
+                    }
+                };
+
+                this.isRecommended = function(){
+                    if(this.repo.extra){
+                        return true;
+                    }
+                    return false;
                 };
 
                 this.labelFunction = function(value){

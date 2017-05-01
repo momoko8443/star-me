@@ -87,10 +87,8 @@
             processData: false,
             contentType: 'application/json',
             data: JSON.stringify({ body: self.comment, repo: repo }),
-            success: function (result) {
-              if (result === 'Created') {
+            success: function () {
                 $('#comment-modal').modal('toggle');
-              }
             }
           });
         });

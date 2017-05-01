@@ -19,7 +19,8 @@
         "repos":"https://api.github.com/users/{0}/repos",
         "search":"https://api.github.com/search",
         "issue":"https://api.github.com/repos/momoko8443/star-me/issues",
-        "comment":"https://api.github.com/repos/momoko8443/star-me/issues/{0}/comments"
+        "comment":"https://api.github.com/repos/momoko8443/star-me/issues/{0}/comments",
+        "star":"https://api.github.com/user/starred"
     }
 
 }

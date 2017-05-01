@@ -83,9 +83,18 @@ module.exports = function (server, config) {
             }
         })
         .then(function(issue){
-            issueGithub.addComment(token,issue.number,comment).then(function(result){
-                res.sendStatus(201);
+            return issueGithub.addComment(token,issue.number,comment).then(function(result){
+                if(result === 'Created'){
+                    return result;
+                }
             });
+        })
+        .then(function(comment){
+            repoGithub.star(token,repoName).then(function(result){
+                if(result === undefined){
+                    res.end();
+                }         
+            })
         });     
     });
 

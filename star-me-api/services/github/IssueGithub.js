@@ -32,6 +32,34 @@ function IssueGithub(config) {
         });
     };
 
+    this.edit = function(token,issue_id,body){
+        return new Promise(function(resolve,reject){
+            if(token && issue_id){
+                var url = api.issue + '/' + issue_id;
+                console.log(url);
+                var headers = { 'User-Agent': app.app_name, Authorization: 'token ' + token };
+                request({
+                    url: url,
+                    json: true,
+                    method: 'PATCH',
+                    headers: headers,
+                    proxy: 'http://web-proxy.jpn.hp.com:8080',
+                    body: {
+                        body: body
+                    }
+                }, function (error, response, body) {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(body);
+                    }
+                });
+            }else{
+                reject();
+            }
+        });  
+    };
+
     this.addComment = function (token, issue_id, body) {
         return new Promise(function (resolve, reject) {
             if (token && issue_id) {

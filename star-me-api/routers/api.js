@@ -69,6 +69,7 @@ module.exports = function (server, config) {
         var repo = req.body.repo;
         var repoName = repo.full_name;
         var token = cache.get(req.session.id);
+        var current_issue = null;
         issueGithub.findOne(token,repoName)
         .then(function(result){
             if(result && result.total_count === 1){
@@ -76,24 +77,36 @@ module.exports = function (server, config) {
             }else{
                 //not exist, create a new issue
                 var title = '[recommend] ' + repoName;
-                var body = JSON.stringify(repo);
-                return issueGithub.create(token,title,body).then(function(result){
+                //var body = JSON.stringify(repo);
+                return issueGithub.create(token,title,'').then(function(issue){
                     return result;
                 });
             }
         })
         .then(function(issue){
+            current_issue = issue;
             return issueGithub.addComment(token,issue.number,comment).then(function(result){
                 if(result === 'Created'){
-                    return result;
+                    return;
                 }
             });
         })
-        .then(function(comment){
-            repoGithub.star(token,repoName).then(function(result){
+        .then(function(){
+            return repoGithub.star(token,repoName).then(function(result){
                 if(result === undefined){
-                    res.end();
+                    return;
                 }         
+            })
+        })
+        .then(function(){
+            return repoGithub.findOne(token,repoName).then(function(repo){
+                return repo;
+            })
+        })
+        .then(function(repo){
+            var body = JSON.stringify(repo);    
+            issueGithub.edit(token,current_issue.number,body).then(function(issue){
+                res.end();
             })
         });     
     });

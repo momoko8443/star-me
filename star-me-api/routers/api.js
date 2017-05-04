@@ -106,8 +106,8 @@ module.exports = function (server, config) {
         .then(function(repo){
             var body = JSON.stringify(repo);    
             issueGithub.edit(token,current_issue.number,body).then(function(issue){
-                res.end();
-            })
+                res.send(repo);
+            });
         });     
     });
 

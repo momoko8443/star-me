@@ -19,7 +19,6 @@
 <body uku-application>
 
   <navigator-bar uku-login-user="appCtrl.loginUser"></navigator-bar>
-  <jumbotron id="jumbotron"></jumbotron>
   <!--<filter-bar></filter-bar>
   <content-list id="content-list" uku-search-results="appCtrl.searchResults"></content-list>-->
   <div id="viewContainer"></div>
@@ -41,6 +40,7 @@
     uku.registerComponent('repo-item', 'components/repo-item.html');
     uku.registerComponent('my-footer', 'components/footer.html');
     uku.registerComponent('comment-modal', 'components/comment-modal.html');
+    uku.registerComponent('repo-detail', 'components/repo-detail.html');
     var appCtrl = new ApplicationController(uku);
     uku.registerController('appCtrl', appCtrl);
     uku.addListener(Ukulele.INITIALIZED, function () {
@@ -84,6 +84,14 @@
       var self = this;
       this.loginUser = null;
       this.registerListener = function () {
+
+        document.getElementById('content-list').addEventListener('showrepodetail',function(event){
+          var repo = event.data.repo;
+          self.selectedRepo = repo;
+          route.goto('#detail');
+          uku.refresh('appCtrl');
+        });
+
         document.getElementById('content-list').addEventListener('opencommentmodal', function (event) {
           var repo = event.data.repo;
           self.selectedRepo = repo;
@@ -97,7 +105,7 @@
           var repo = event.data.repo;
           var repoName = repo.full_name;
           self.comment = event.data.comment;
-          var url = 'api/repos/' + repo.id + '/comments';
+          var url = 'api/repos/' + repoName + '/comments';
           $.ajax({
             type: "POST",
             url: url,

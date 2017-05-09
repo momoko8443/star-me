@@ -1,7 +1,9 @@
 <uku-component>
     <template>
         <div uku-class="cc.repoItemStyle()">
-            <h2>{{cc.repo.name}}</h2>
+            <a href="javascript:;" uku-onclick="cc.detail()">
+                <h2>{{cc.repo.name}}</h2>
+            </a>
             <p class="repo-item-description">{{cc.labelFunction(cc.repo.description)}}</p>
             <span>
                 <img uku-src="cc.repo.owner.avatar_url" width="50" height="50" class="repo-author-avatar">
@@ -28,8 +30,11 @@
     <script>
         (function(){
             return function(uku){
+                this.detail = function(){
+                    this.fire('showrepodetail',{repo:this.repo},true);
+                };
+
                 this.star = function(){
-                    //jq('#myModal').modal('toggle');
                     this.fire('opencommentmodal',{repo:this.repo},true);
                 };
 

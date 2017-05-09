@@ -63,8 +63,16 @@ module.exports = function (server, config) {
         });
     });
 
-    router.post('/repos/:id/comments', function(req, res){
-        var repoId = decodeURIComponent(req.params.id);
+    router.get('/repos/:name',function(req,res){
+        var token = cache.get(req.session.id);
+        var repoName = decodeURIComponent(req.params.name);
+        repoGithub.getREADME(token,repoName).then(function(result){
+            res.send(result);
+        });
+    });
+
+    router.post('/repos/:name/comments', function(req, res){
+        var repoName = decodeURIComponent(req.params.name);
         var comment = req.body.body;
         var repo = req.body.repo;
         var repoName = repo.full_name;

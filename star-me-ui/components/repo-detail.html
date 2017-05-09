@@ -1,0 +1,26 @@
+<uku-component>
+    <template>
+        <div id="markdownViewer"></div>
+    </template>
+    <script>
+        (function(){
+            return function(uku){
+                this.loadReadMe = function(repoName){
+                    var url = '/api/repos/' + encodeURIComponent(repoName);
+                    $.get(url, function (result) {
+                        $('#markdownViewer').html(result);
+                    });
+                };
+
+                Object.defineProperty(this,'repo',{
+                    set: function(value){
+                        if(value){
+                            this.repositroy = value;
+                            this.loadReadMe(this.repositroy.full_name);
+                        }
+                    }
+                });
+            };
+        })()
+    </script>
+</uku-component>

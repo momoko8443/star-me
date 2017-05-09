@@ -3,7 +3,7 @@ var request = require('request');
 function RepoGithub(config) {
     var api = config.api;
     var app = config.app;
-
+    var self = this;
     this.star = function (token, repoName) {
         return new Promise(function (resolve, reject) {
             if (token) {
@@ -48,6 +48,50 @@ function RepoGithub(config) {
                     resolve(body);
                 }
             });
+        });
+    };
+
+    this.getContent = function(token, repoName, fileName){
+        return new Promise(function(resolve, reject){
+            var url = api.repo + '/' + repoName + '/contents/' + fileName;
+            console.log(url);
+            var headers = { 'User-Agent': app.app_name };
+            if (token) {
+                headers = { 'User-Agent': app.app_name, Authorization: 'token ' + token };
+            }
+            request({
+                url: url,
+                json: true,
+                headers: headers,
+                proxy: 'http://web-proxy.jpn.hp.com:8080'
+            }, function (error, response, body) {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(body);
+                }
+            });
+        });
+    };
+
+    this.getREADME = function(token, repoName){
+        return new Promise(function(resolve,reject){
+            self.getContent(token,repoName,'README.md').then(function(result){
+                if(result && result.download_url){
+                    request({
+                        url: result.download_url,
+                        proxy: 'http://web-proxy.jpn.hp.com:8080'
+                    }, function (error, response, body) {
+                        if (error) {
+                            reject(error);
+                        } else {
+                            resolve(body);
+                        }
+                    });
+                }else{
+                    reject();
+                }
+            })
         });
     };
 

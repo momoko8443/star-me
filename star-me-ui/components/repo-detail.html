@@ -12,11 +12,13 @@
         (function () {
             return function (uku) {
                 this.loadReadMe = function (repoName) {
+                    NProgress.start();
                     var url = '/api/repos/' + encodeURIComponent(repoName);
                     $.get(url, function (result) {
                         var converter = new showdown.Converter();
                         var html = converter.makeHtml(result);
                         $('#markdownViewer').html(html);
+                        NProgress.done();
                     });
                 };
 

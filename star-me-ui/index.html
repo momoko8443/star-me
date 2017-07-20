@@ -13,14 +13,15 @@
 
   <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  
+  <link rel='stylesheet' href='bower_components/nprogress/nprogress.css'/>
   <link href="styles/main.css" rel="stylesheet">
+  <!--<link href="styles/effect.css" rel="stylesheet">-->
 </head>
 
 <body uku-application>
 
   <navigator-bar uku-login-user="appCtrl.loginUser"></navigator-bar>
-  <!--<filter-bar></filter-bar>
-  <content-list id="content-list" uku-search-results="appCtrl.searchResults"></content-list>-->
   <div id="viewContainer"></div>
   <my-footer></my-footer>
 
@@ -31,6 +32,7 @@
   <script src="bower_components/ukulelejs/dist/uku.js"></script>
   <script src="bower_components/ukulelejs/dist/polyfill/custom_event.js"></script>
   <script src="bower_components/showdown/dist/showdown.min.js"></script>
+  <script src='bower_components/nprogress/nprogress.js'></script>
   <script>
     var uku = new Ukulele();
     var router;
@@ -67,6 +69,7 @@
 
       function homePageCompletedHandler(e) {
         appCtrl.registerListener();
+        NProgress.start();
         $.get('/api/authenticatedUser', function (result) {
           if (result) {
             appCtrl.loginUser = result;
@@ -81,6 +84,7 @@
           if (result) {
             appCtrl.searchResults = result;
             uku.refresh('appCtrl');
+            NProgress.done();
           }
         });
         uku.removeListener(Ukulele.HANDLE_ELEMENT_COMPLETED,homePageCompletedHandler);

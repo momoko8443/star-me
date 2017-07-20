@@ -19,6 +19,7 @@
     "bootstrap": "^3.3.7",
     "routejs": "uku-routejs#*",
     "font-awesome": "Font-Awesome#^4.7.0",
-    "showdown": "^1.6.4"
+    "showdown": "^1.6.4",
+    "nprogress": "^0.2.0"
   }
 }
